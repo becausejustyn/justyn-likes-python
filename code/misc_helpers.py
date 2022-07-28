@@ -2,6 +2,13 @@ import pathlib
 import json
 import numpy as np
 
+from typing import List, TypeVar
+# generic type to represent a data point
+X = TypeVar('X')  
+Y = TypeVar('Y') 
+Vector = List[float]
+Matrix = List[List[float]]
+
 ## get package directory ##
 package_dir = pathlib.Path(__file__).parent.parent.resolve()
 
@@ -112,3 +119,55 @@ df.column_name.value_counts().sort_index()
 pd.options.<TAB>
 
 pd.set_option('display.max_rows', 500)
+
+
+# some error messages examples
+def add(v: Vector, w: Vector) -> Vector:
+    """Adds corresponding elements"""
+    assert len(v) == len(w), "vectors must be the same length"
+
+    return [v_i + w_i for v_i, w_i in zip(v, w)]
+
+assert add([1, 2, 3], [4, 5, 6]) == [5, 7, 9]
+
+def subtract(v: Vector, w: Vector) -> Vector:
+    """Subtracts corresponding elements"""
+    if len(v) != len(w):
+        raise ArithmeticError("cannot add matrices with different shapes")
+
+    return [v_i - w_i for v_i, w_i in zip(v, w)]
+
+assert subtract([5, 7, 9], [4, 5, 6]) == [1, 2, 3]
+
+
+
+# pandas summing
+import pandas as pd
+df = pd.DataFrame()
+df.loc[:, ['a', 'c', 'd']].sum(axis=0)
+df[['a', 'c', 'd']].sum(axis=0)
+df[['a', 'c', 'd']].values.sum(axis=0)
+[df[col].values.sum(axis=0) for col in ('a', 'c', 'd')]
+
+# Counting the number of missing values
+import numpy as np
+
+np.count_nonzero(np.isnan(df))
+
+np.count_nonzero(~np.isnan(df))
+
+print('total sum:', np.nansum(df))
+print('column sums:', np.nansum(df, axis=0))
+print('row sums:', np.nansum(df, axis=1))
+
+# Removing all rows that contain missing values
+df[~np.isnan(df).any(1)]
+
+# Convert missing values to 0
+df0 = np.nan_to_num(df)
+
+# Converting certain numbers to NaN
+df0[df0==0] = np.nan
+
+# Remove all missing elements from an array
+df[~np.isnan(df)]
