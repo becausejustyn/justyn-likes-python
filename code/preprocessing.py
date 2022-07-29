@@ -149,3 +149,17 @@ def train_test_split(X, y, test_size=0.5, shuffle=True, seed=None):
     y_train, y_test = y[:split_i], y[split_i:]
 
     return X_train, X_test, y_train, y_test
+
+'''
+xs = [x for x in range(1000)]  # xs are 1 ... 1000
+ys = [2 * x for x in xs]       # each y_i is twice x_i
+x_train, x_test, y_train, y_test = train_test_split(xs, ys, 0.25)
+
+# Check that the proportions are correct
+assert len(x_train) == len(y_train) == 750
+assert len(x_test) == len(y_test) == 250
+
+# Check that the corresponding data points are paired correctly.
+assert all(y == 2 * x for x, y in zip(x_train, y_train))
+assert all(y == 2 * x for x, y in zip(x_test, y_test))
+'''
