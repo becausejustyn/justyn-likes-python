@@ -7,6 +7,24 @@ def normalize(X, axis=-1, order=2):
     l2[l2 == 0] = 1
     return X / np.expand_dims(l2, axis)
 
+def normalize(data, min_val=0, max_val=1):
+    """
+    Normalizes values in a list of data points to a range, e.g.,
+    between 0.0 and 1.0. 
+    Returns the original object if value is not a integer or float.
+    
+    """
+    norm_data = []
+    data_min = min(data)
+    data_max = max(data)
+    for x in data:
+        numerator = x - data_min
+        denominator = data_max - data_min
+        x_norm = (max_val-min_val) * numerator/denominator + min_val
+        norm_data.append(x_norm)
+    return norm_data
+
+
 def standardize(X):
     '''Standardize the dataset X'''
     X_std = X
