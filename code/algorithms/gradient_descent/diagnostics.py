@@ -1,6 +1,6 @@
 
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def opt_history(model, beta_history, beta_solution):
     """
@@ -33,42 +33,47 @@ def opt_history(model, beta_history, beta_solution):
 
     return fun_history, grad_history, beta_error
  
-def plot_opt_path(beta_history, model, beta_solution, opt_algo=''):
+def plot_opt_path(beta_history, model, beta_solution, opt_algo='', differences = False):
 
     # model history
     fun_history, grad_history, beta_error = opt_history(model, beta_history, beta_solution)
 
-    plt.figure(figsize=[15, 5])
+    plt.figure(figsize=[18, 7])
 
     # absolutes
     plt.subplot(2, 3, 1)
     plt.plot(fun_history)
     plt.ylabel('function value')
-    plt.xlabel('iteration')
-    plt.title(opt_algo + ' for ' + model.name)
+    plt.xlabel('Iteration')
+    plt.suptitle(f'{opt_algo.title()} for {model.name.title()}')
+    #plt.title(f'{opt_algo.title()} for {model.name.title()}', loc='center')
+    #plt.title(opt_algo + ' for ' + model.name)
 
     plt.subplot(2, 3, 2)
     plt.plot(beta_error)
     plt.ylabel('||beta - beta*||')
-    plt.xlabel('iteration')
+    plt.xlabel('Iteration')
 
     plt.subplot(2, 3, 3)
     plt.plot(grad_history)
     plt.ylabel('grad F')
-    plt.xlabel('iteration')
+    plt.xlabel('Iteration')
 
-    # # differences
-    # plt.subplot(2,3,4)
-    # plt.plot(np.diff(fun_history))
-    # plt.ylabel('function value diff')
-    # plt.xlabel('iteration')
+    if differences == True:
+        plt.subplot(2, 3, 4)
+        plt.plot(np.diff(fun_history))
+        plt.ylabel('function value diff')
+        plt.xlabel('Iteration')
 
-    # plt.subplot(2,3,5)
-    # plt.plot(np.diff(beta_error))
-    # plt.ylabel('||beta - beta*|| diff')
-    # plt.xlabel('iteration')
+        plt.subplot(2, 3, 5)
+        plt.plot(np.diff(beta_error))
+        plt.ylabel('||beta - beta*|| diff')
+        plt.xlabel('Iteration')
 
-    # plt.subplot(2,3,6)
-    # plt.plot(np.diff(grad_history))
-    # plt.ylabel('grad F diff')
-    # plt.xlabel('iteration')
+        plt.subplot(2, 3, 6)
+        plt.plot(np.diff(grad_history))
+        plt.ylabel('grad F diff')
+        plt.xlabel('Iteration')
+
+
+
