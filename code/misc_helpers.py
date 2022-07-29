@@ -104,6 +104,55 @@ sample_string3.replace(" ", "_").lower()
 
 print(*list(map('s{}'.format, range(1, 10))), sep = ', ')
 
+######################    Reminder Functions    #########################################
+
+def show_me_how_venv(installed = False, venv_name = False, venv_input = None, activate = False, version = False):
+  
+  if installed == False:
+    print("#check if you have it installed \n which virtualenv \n #install it \n python3 -m pip install virtualenv")
+    
+  if venv_input != None:
+      name = venv_input
+  else: 
+      name = 'venv_name'
+
+  if venv_name == False:
+    print(f"#create a venv named {name} \n virtualenv {name}")
+    
+  if activate == False:
+    print("#Activate the virtual environment \n source python_notes/bin/activate")
+    
+  if version == False:
+    print("which python")
+    
+#show_me_how_venv(venv_input = 'cool_venv_name')
+
+
+def viz_help():
+    print("from plotnine import ggplot, geom_point, aes, stat_smooth, facet_wrap")
+    print("bottom = df[np.isin(df['variable'].to_numpy(), bottom_pop['variable'])]")
+    print("(ggplot(bottom, aes('year', 'population')) \n + geom_point() \n + facet_wrap('~country'))")
+    print("")
+    print("")
+    print("")
+    
+def pandas_helper():
+    print("df = pd.read_csv('data.csv')")
+    print("df.columns = df.columns.str.strip().str.replace('string', 'replacement').str.lower()")
+    print('')
+    print('df.nunique()')
+    print("df.query('variable  < value').sort_values(by=['variable'], ascending=False)")
+    print("df.groupby('variable').size().reset_index().sort_values(by=['variable'])")
+    print("pd.set_option('display.float_format', '{:.3f}'.format)")
+    print("pd.options.display.max_rows = 20")
+    
+def numpy_mat(arg = 'zeros'):
+    if arg == 'zeros':
+        print("np.zeros((3, 4))")
+        print("3x4 matrix consisiting of 0s")
+    if arg == 'ones':
+        print("np.ones((3, 4))")
+        print("3x4 matrix consisiting of 1s")
 
 ######################    Pandas    #########################################
 
