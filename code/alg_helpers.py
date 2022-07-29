@@ -1,6 +1,7 @@
 
 from typing import List
-import numpy as np
+#import numpy as np
+from math import exp, log, sqrt
 from copy import deepcopy
 from statistics import mean
 
