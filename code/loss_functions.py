@@ -42,3 +42,24 @@ def accuracy_score(y_true, y_pred):
     '''Compare y_true to y_pred and return the accuracy'''
     accuracy = np.sum(y_true == y_pred, axis=0) / len(y_true)
     return accuracy
+
+def accuracy(y_true, y_pred):
+    # both are not one hot encoded
+    return np.mean(y_pred == y_true)
+    #return np.mean(y_pred == y_true)  
+
+def precision(tp: int, fp: int, fn: int, tn: int) -> float:
+    return tp / (tp + fp)
+
+assert precision(70, 4930, 13930, 981070) == 0.014
+
+def recall(tp: int, fp: int, fn: int, tn: int) -> float:
+    return tp / (tp + fn)
+
+assert recall(70, 4930, 13930, 981070) == 0.005
+
+def f1_score(tp: int, fp: int, fn: int, tn: int) -> float:
+    p = precision(tp, fp, fn, tn)
+    r = recall(tp, fp, fn, tn)
+
+    return 2 * p * r / (p + r)
