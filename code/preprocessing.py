@@ -1,5 +1,20 @@
 
+import math
+import random
 import numpy as np
+import pandas as pd
+from typing import List, Tuple, TypeVar
+
+X = TypeVar('X')  
+Y = TypeVar('Y') 
+Vector = List[float]
+
+def scale_val(x):
+    mean = sum(x) * (1.0 / len(x))
+    var = list(map(lambda x: (x - mean) ** 2, x))
+    sd = (sum(var) * 1.0 / (len(var))) ** 0.5
+    scaled_values = (x - mean) / sd
+    return scaled_values
 
 def normalize(X, axis=-1, order=2):
     '''Normalize the dataset X'''
@@ -127,6 +142,15 @@ def add_bias(input_matrix):
 def add_bias2(data):
     return np.hstack((np.ones((data.shape[0], 1)), data))
 
+def add_bias(input_matrix):
+        bias = np.ones((len(input_matrix), 1))
+        return np.concatenate([input_matrix, bias], axis=-1)
+
+def add_ones(xs):
+    # Prepend a constant of 1 to every x value so that we can use the dot product later on 
+    #for x in xs: x.insert(0, 1)
+    for x in xs:
+        x.insert(0, 1)
 
 def batch_iterator(X, y=None, batch_size=64):
     '''Simple batch generator'''
