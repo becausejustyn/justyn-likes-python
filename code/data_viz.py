@@ -9,7 +9,6 @@ from loss_functions import neg_log_likelihood
 
 plt.rcParams.update({'font.size': 8})
 
-
 x = np.linspace(-1.5, 1.5, 30)
 px = 0.8
 py = px**2
@@ -169,3 +168,109 @@ def plot_decision_boundary(ys, beta):
 
 
 
+import pandas as pd
+import seaborn as sns
+import matplotlib.pylab as plt
+import matplotlib.patches as patches
+
+plt.style.use('seaborn')
+color_pal = [x['color'] for x in plt.rcParams['axes.prop_cycle']]
+pd.set_option('max_columns', 100) # So we can see more columns
+
+
+# https://stackoverflow.com/questions/30228069/how-to-display-the-value-of-the-bar-on-each-bar-with-pyplot-barh
+def label_bars(ax, bars, text_format, **kwargs):
+    """
+    Attaches a label on every bar of a regular or horizontal bar chart
+    """
+    ys = [bar.get_y() for bar in bars]
+    y_is_constant = all(y == ys[0] for y in ys)  # -> regular bar chart, since all all bars start on the same y level (0)
+
+    if y_is_constant:
+        _label_bar(ax, bars, text_format, **kwargs)
+    else:
+        _label_barh(ax, bars, text_format, **kwargs)
+
+
+def _label_bar(ax, bars, text_format, **kwargs):
+    """
+    Attach a text label to each bar displaying its y value
+    """
+    max_y_value = ax.get_ylim()[1]
+    inside_distance = max_y_value * 0.05
+    outside_distance = max_y_value * 0.01
+
+    for bar in bars:
+        text = text_format.format(bar.get_height())
+        text_x = bar.get_x() + bar.get_width() / 2
+
+        is_inside = bar.get_height() >= max_y_value * 0.15
+        if is_inside:
+            color = "white"
+            text_y = bar.get_height() - inside_distance
+        else:
+            color = "black"
+            text_y = bar.get_height() + outside_distance
+
+        ax.text(text_x, text_y, text, ha='center', va='bottom', color=color, **kwargs)
+
+
+def _label_barh(ax, bars, text_format, **kwargs):
+    """
+    Attach a text label to each bar displaying its y value
+    Note: label always outside. otherwise it's too hard to control as numbers can be very long
+    """
+    max_x_value = ax.get_xlim()[1]
+    distance = max_x_value * 0.0025
+
+    for bar in bars:
+        text = text_format.format(bar.get_width())
+
+        text_x = bar.get_width() + distance
+        text_y = bar.get_y() + bar.get_height() / 2
+
+        ax.text(text_x, text_y, text, va='center', **kwargs)
+
+
+
+df.groupby('PlayId').first()['Yards'].plot(
+    kind='hist', figsize=(15, 5), bins=50, title='Distribution of Yards Gained (Target)')
+plt.show()
+
+fig, axes = plt.subplots(4, 1, figsize=(15, 8), sharex=True)
+n = 0
+for i, d in train.groupby('Down'):
+    d['Yards'].plot(kind='hist',
+                    bins=30,
+                   color=color_pal[n],
+                   ax=axes[n],
+                   title=f'Yards Gained on down {i}')
+    n+=1
+
+
+
+
+# Create the DL-LB combos
+train['DL_LB'] = train['DefensePersonnel'] \
+    .str[:10] \
+    .str.replace(' DL, ','-') \
+    .str.replace(' LB','') # Clean up and convert to DL-LB combo
+top_5_dl_lb_combos = train.groupby('DL_LB').count()['GameId'] \
+    .sort_values() \
+    .tail(10).index.tolist()
+ax = train.loc[train['DL_LB'].isin(top_5_dl_lb_combos)] \
+    .groupby('DL_LB').mean()['Yards'] \
+    .sort_values(ascending=True) \
+    .plot(kind='bar',
+          title='Average Yards Top 5 Defensive DL-LB combos',
+          figsize=(15, 5),
+          color=color_pal[4])
+# for p in ax.patches:
+#     ax.annotate(str(round(p.get_height(), 2)),
+#                 (p.get_x() * 1.005, p.get_height() * 1.015))
+
+#bars = ax.bar(0.5, 5, width=0.5, align="center")
+bars = [p for p in ax.patches]
+value_format = "{:0.2f}"
+label_bars(ax, bars, value_format, fontweight='bold')
+plt.show()
