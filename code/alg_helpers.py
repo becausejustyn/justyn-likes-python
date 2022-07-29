@@ -47,7 +47,6 @@ def z_score(data: List[List[float]]) -> List[List[float]]:
 # xs = z_score(xs)
 
 
-
 def estimate_beta(xs, ys, epochs: int = 5000, learning_rate: float = 0.01):
     # Find the best separation to classify the data points
     beta: List[float] = [random() / 10 for _ in range(3)]
@@ -73,3 +72,65 @@ def estimate_beta(xs, ys, epochs: int = 5000, learning_rate: float = 0.01):
         # Take a small step in the direction of greatest decrease
         beta = [b + (gb * -learning_rate) for b, gb in zip(beta, grad)]
     print(f'Best estimate for "beta": {beta}')
+
+def probabilities(X, w):
+    """
+    Calculates probabilities from trained classifier
+
+    Parameters
+        X: m x n matrix of features
+        w: n x 1 vectors of weights
+    
+    Returns
+        probabilities: m x 1 vector of predictions
+    """
+
+    return sigmoid(np.dot(X, w))
+
+    
+    
+def predict(X, w):
+    """
+    Predicts classifiers based on weights
+
+    Parameters
+        X: m x n matrix of features
+        w: n x 1 vector of weights
+    
+    Returns
+        predictions: m x 1 vector of predictions
+    """
+
+    predictions = sigmoid(np.dot(X, w))
+
+    for i, val in enumerate(predictions):
+        if val >= 0.5:
+            predictions[i] = 1
+        else:
+            predictions[i] = 0
+    return predictions
+    
+    
+    
+def calc_accuracy(X, y, w):
+    """
+    Calculates accuracy of classifier on training data
+
+    Parameters
+        X: m x n matrix of features
+        y: m x 1 vector of labels
+        w: n x 1 vector of weights
+    Returns
+        accuracy (float): accuracy of model
+    """
+
+    predictions = predict(X, w)
+    correct_predictions = np.zeros(shape = y.size)
+    for i in range(len(y)):
+        if predictions[i] == y[i]:
+            correct_predictions[i] = 1
+    return sum(correct_predictions) / len(correct_predictions)
+
+print(f'My model accuracy: {calc_accuracy(X, y, w_train)}')
+#print('My model accuracy: ' + str(calc_accuracy(X, y, w_train)))
+
