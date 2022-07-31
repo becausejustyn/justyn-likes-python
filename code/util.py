@@ -10,6 +10,15 @@ def format_decimals_factory(num_decimals = 1):
 def map_df(min: int, max: int, variable):
   data = pd.concat([nfl.load_pbp_data(variable).assign(variable = variable) for variable in range(min, max)])
   
+def which(self):
+    try:
+        self = list(iter(self))
+    except TypeError as e:
+        raise Exception("""'which' method can only be applied to iterables.
+        {}""".format(str(e)))
+    indices = [i for i, x in enumerate(self) if bool(x) == True]
+    return(indices)
+    
 # seq function
 # print 1, 2, 3
 #[_ for _ in range(1, 4, 1)]
