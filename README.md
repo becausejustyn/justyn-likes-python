@@ -15,6 +15,17 @@ The <strong>gradient</strong> is a vector that tells us in what direction the we
 
 <h1> README </h1>
 
+```python
+import numpy as np
+
+a = array([2, 3, 4, 5])	
+# Input is a 3,4 array
+a = array([
+  [11, 12, 13, 14],
+  [21, 22, 23, 24],
+  [31, 32, 33, 34]])
+```
+
 <details>
 <summary> <h2> Slicing </h2> </summary>
 
