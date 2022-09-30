@@ -176,5 +176,136 @@ a = array([
 
 <hr>
 
+<details>
+<summary> <h2> LaTeX in Notebooks </h2> </summary>
+
+```python
+from IPython.display import display, Math
+
+a = 3
+b = 5
+print("The equation is:")
+display(Math(f"y= {a}x+{b}"))
+```
+
+```
+# output shows it properly
+The equation is:
+\displaystyle y= 3x+5y=3x+5
+```
+
+<h3> More LaTeX </h3>
+
+```python
+# !pip install latexify-py
+
+import math
+import latexify
+
+@latexify.with_latex
+def solve(a, b, c):
+    return (-b + math.sqrt(b**2 - 4*a*c)) / (2*a)
+
+print(solve(1, 4, 3))
+print(solve)
+print()
+solve
+```
+
+```
+# print(solve) gives latex output
+\mathrm{solve}(a, b, c)\triangleq \frac{-b + \sqrt{b^{2} - 4ac}}{2a}
+
+# solve gives the formatted output
+```
+
+```python
+@latexify.with_latex
+def sinc(x):
+    if x == 0:
+        return 0
+    else:
+        return 1
+
+# gives nested output
+```
+
+</details>
+
+
+<h2> Enumerate: Get Counter and Value While Looping </h2>
+
+```python
+arr = ['a', 'b', 'c', 'd', 'e']
+
+for i, val in enumerate(arr):
+    print(i, val)
+```
+
+```
+0 a
+1 b
+2 c
+3 d
+4 e
+```
+
+<h2> Get count of items in list </h2>
+
+```python
+from collections import Counter
+
+char_list = ["a", "b", "c", "a", "d", "b", "b"]
+Counter(char_list)
+```
+
+```
+Counter({'a': 2, 'b': 3, 'c': 1, 'd': 1})
+```
+
+
+
+<h2> **kwargs: Pass Multiple Arguments to a Function in Python </h2>
+
+```python
+# Once **kwargs argument is passed, you can treat it like a Python dictionary.
+
+parameters = {'a': 1, 'b': 2}
+
+def example(c, **kwargs):
+    print(kwargs)
+    for val in kwargs.values():
+        print(c + val)
+
+example(c=3, **parameters)
+```
+
+```
+{'a': 1, 'b': 2}
+4
+5
+```
+
+<h2> Directory </h2>
+
+```python
+from pathlib import Path
+
+# Create a new directory
+folder = Path('new')
+folder.mkdir(exist_ok=True)
+
+# Create new file inside new directory
+file = folder / 'new_file.txt'
+file.touch()
+
+# !tree new 
+
+# If you want to get the path to folders/files from the home directory
+path = Path.home()
+
+docs = path / 'Documents'
+pictures = path / 'Pictures'
+```
 
 
